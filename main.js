@@ -8,6 +8,7 @@ async function getUser(username) {
     try{
         const { data } =  await axios(APIURL + username)
         createUserCard(data)
+        getRepos(username)
     }catch(err){
         if(err.response.status == 404){
             createErrorCard('User Not Found')
@@ -15,6 +16,14 @@ async function getUser(username) {
     }
 }
 
+async function getRepos(username) {
+    try{
+        const { data } =  await axios(APIURL + username + '/repos?sort=created')
+        addReposToCard(data)
+    }catch(err){
+            createErrorCard('Problem fetching repos')
+    }
+}
 
 
 // Creating a User Card in case of successful response
@@ -34,13 +43,7 @@ function createUserCard(user) {
                     <li class="flex items-center">${user['public_repos']}<strong class="text-sky-400 text-sm ml-2">Repos</strong></li>
                 </ul>
 
-                <div id="repos" class="mt-4">
-                    <a href="" class="repos text-slate-100 bg-blue-700 py-1 px-4 mr-2 rounded-md in inline-block hover:bg-blue-600">repo1</a>
-                    <a href="" class="repos text-slate-100 bg-blue-700 py-1 px-4 mr-2 rounded-md in inline-block hover:bg-blue-600">repo1</a>
-                    <a href="" class="repos text-slate-100 bg-blue-700 py-1 px-4 mr-2 rounded-md in inline-block hover:bg-blue-600">repo1</a>
-                </div>
-
-            </div>
+                <div id="repos" class="mt-4"></div>
         </div>
     `
     main.innerHTML = cardHTML
@@ -55,9 +58,22 @@ function createErrorCard(msg) {
     `
 
     main.innerHTML = errorHTML
-
 }
 
+
+function addReposToCard(repos) {
+    const reposEl = document.getElementById('repos')
+    repos
+        .slice(0,5)
+        .forEach(repo => {
+        const repoEl = document.createElement('a')
+        repoEl.classList.add('text-slate-100','bg-blue-700','py-1','px-4','mr-2','mb-2','rounded-md','inline-block','hover:bg-blue-600')
+        repoEl.href = repo.html_url;
+        repoEl.target = '_blank';
+        repoEl.innerText = repo.name;
+        reposEl.appendChild(repoEl);
+    })
+}
 
 // Handling Form Submission
 form.addEventListener('submit' , (e) => {
