@@ -5,23 +5,23 @@ const main = document.querySelector('main')
 // Get reqquest to Github Users API using Axios
 const APIURL = 'https://api.github.com/users/'
 async function getUser(username) {
-    try{
-        const { data } =  await axios(APIURL + username)
+    try {
+        const { data } = await axios(APIURL + username)
         createUserCard(data)
         getRepos(username)
-    }catch(err){
-        if(err.response.status == 404){
+    } catch (err) {
+        if (err.response.status == 404) {
             createErrorCard('User Not Found')
         }
     }
 }
 
 async function getRepos(username) {
-    try{
-        const { data } =  await axios(APIURL + username + '/repos?sort=created')
+    try {
+        const { data } = await axios(APIURL + username + '/repos?sort=created')
         addReposToCard(data)
-    }catch(err){
-            createErrorCard('Problem fetching repos')
+    } catch (err) {
+        createErrorCard('Problem fetching repos')
     }
 }
 
@@ -64,24 +64,24 @@ function createErrorCard(msg) {
 function addReposToCard(repos) {
     const reposEl = document.getElementById('repos')
     repos
-        .slice(0,5)
+        .slice(0, 5)
         .forEach(repo => {
-        const repoEl = document.createElement('a')
-        repoEl.classList.add('text-slate-100','bg-blue-700','py-1','px-4','mr-2','mb-2','rounded-md','inline-block','hover:bg-blue-600')
-        repoEl.href = repo.html_url;
-        repoEl.target = '_blank';
-        repoEl.innerText = repo.name;
-        reposEl.appendChild(repoEl);
-    })
+            const repoEl = document.createElement('a')
+            repoEl.classList.add('text-slate-100', 'bg-blue-700', 'py-1', 'px-4', 'mr-2', 'mb-2', 'rounded-md', 'inline-block', 'hover:bg-blue-600')
+            repoEl.href = repo.html_url;
+            repoEl.target = '_blank';
+            repoEl.innerText = repo.name;
+            reposEl.appendChild(repoEl);
+        })
 }
 
 // Handling Form Submission
-form.addEventListener('submit' , (e) => {
+form.addEventListener('submit', (e) => {
     e.preventDefault()
 
     const user = search.value
-    if(user){
+    if (user) {
         getUser(user)
         search.value = ''
     }
-} )
+})
