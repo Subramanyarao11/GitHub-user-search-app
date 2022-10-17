@@ -9,22 +9,11 @@ async function getUser(username) {
         const { data } =  await axios(APIURL + username)
         createUserCard(data)
     }catch(err){
-        if(err.response.status === 404){
+        if(err.response.status == 404){
             createErrorCard('User Not Found')
         }
     }
 }
-
-// Handling Form Submission
-form.addEventListener('submit' , (e) => {
-    e.preventDefault()
-
-    const user = search.value
-    if(user){
-        getUser(user)
-        search.value = ''
-    }
-} )
 
 
 
@@ -60,11 +49,23 @@ function createUserCard(user) {
 // function to create custom error card in case of error
 function createErrorCard(msg) {
     const errorHTML = `
-        <div class="card flex items-center justify-center p-8 mx-6 my-6 bg-slate-700 rounded-2xl shadow-lg md:flex md:flex-row md:max-w-[800px]'>
-            <h1>${msg}</h1>
+        <div class='flex items-center justify-center p-8 mx-6 my-6 bg-slate-700 rounded-2xl shadow-lg md:flex md:flex-row md:max-w-[800px]'>
+            <h1 class="font-bold text-2xl line-through">${msg}</h1>
         </div>
     `
 
     main.innerHTML = errorHTML
 
 }
+
+
+// Handling Form Submission
+form.addEventListener('submit' , (e) => {
+    e.preventDefault()
+
+    const user = search.value
+    if(user){
+        getUser(user)
+        search.value = ''
+    }
+} )
