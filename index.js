@@ -1,3 +1,4 @@
+
 const form = document.querySelector('form')
 const search = document.getElementById('search')
 const main = document.querySelector('main')
