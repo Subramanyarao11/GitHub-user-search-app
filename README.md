@@ -3,6 +3,10 @@
 
 A Project which uses Github's Public & popular user API to pull data of Github Users
 
+## Screenshot
+
+![Screenshot](screenshot.png)
+
 
 ## API Reference
 
@@ -47,7 +51,5 @@ Tailwind CSS - An Utility CSS Framework
 ```
 
 
-## Screenshot
 
-![Screenshot](screenshot.png)
 
